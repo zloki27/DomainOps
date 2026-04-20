@@ -18,8 +18,15 @@ Focused repository for the Domain Operations Discovery app.
 
 1. Copy `.env.example` to `.env`
 2. Adjust `APP_URL`, `BASIC_AUTH_USER`, and `BASIC_AUTH_HASH` for your environment
-3. Install dependencies with `npm install`
-4. Start locally with `npm run dev`, or use `docker compose up -d`
+3. Set `REPORT_ACCESS_TOKEN` for the hidden internal report area
+4. Install dependencies with `npm install`
+5. Start locally with `npm run dev`, or use `docker compose up -d`
+
+## Hidden report access
+
+- Report pages and report APIs require the normal site Basic Auth plus a separate `REPORT_ACCESS_TOKEN`
+- Open `/report?token=<REPORT_ACCESS_TOKEN>` once to set the internal report cookie
+- After that, `/report` and purge actions work normally in that browser session
 
 ## Production note
 

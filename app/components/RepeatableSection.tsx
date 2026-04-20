@@ -1,23 +1,23 @@
 'use client';
 
-export interface ColumnDef {
-  key: string;
+export interface ColumnDef<T extends object> {
+  key: Extract<keyof T, string>;
   label: string;
   placeholder?: string;
   multiline?: boolean;
 }
 
-interface Props<T extends Record<string, string>> {
+interface Props<T extends object> {
   title: string;
   intro: string;
-  columns: ColumnDef[];
+  columns: ColumnDef<T>[];
   rows: T[];
   onChange: (rows: T[]) => void;
   emptyRow: () => T;
   disabled?: boolean;
 }
 
-export default function RepeatableSection<T extends Record<string, string>>({
+export default function RepeatableSection<T extends object>({
   title,
   intro,
   columns,
@@ -26,7 +26,7 @@ export default function RepeatableSection<T extends Record<string, string>>({
   emptyRow,
   disabled = false,
 }: Props<T>) {
-  function update(i: number, key: string, value: string) {
+  function update(i: number, key: Extract<keyof T, string>, value: string) {
     onChange(rows.map((r, idx) => (idx === i ? { ...r, [key]: value } : r)) as T[]);
   }
   function add() {
@@ -53,14 +53,18 @@ export default function RepeatableSection<T extends Record<string, string>>({
             className="bg-stone-50 rounded-xl border border-stone-100 p-5"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {columns.map(col => (
+              {columns.map(col => {
+                const rawValue = row[col.key];
+                const fieldValue = typeof rawValue === 'string' ? rawValue : '';
+
+                return (
                 <div key={col.key} className={col.multiline ? 'sm:col-span-2' : ''}>
                   <label className="block text-xs font-medium text-[#44403C] mb-1">
                     {col.label}
                   </label>
                   {col.multiline ? (
                     <textarea
-                      value={row[col.key] ?? ''}
+                      value={fieldValue}
                       placeholder={col.placeholder}
                       onChange={e => update(i, col.key, e.target.value)}
                       disabled={disabled}
@@ -70,7 +74,7 @@ export default function RepeatableSection<T extends Record<string, string>>({
                   ) : (
                     <input
                       type="text"
-                      value={row[col.key] ?? ''}
+                      value={fieldValue}
                       placeholder={col.placeholder}
                       onChange={e => update(i, col.key, e.target.value)}
                       disabled={disabled}
@@ -78,7 +82,7 @@ export default function RepeatableSection<T extends Record<string, string>>({
                     />
                   )}
                 </div>
-              ))}
+              )})}
             </div>
             {!disabled && (
               <button

@@ -1,6 +1,7 @@
 import { prisma } from './db';
 import { BRANDS } from './brands';
-import type { ReportBrandRow, QuestionnairePayload, BrandStatus } from './types';
+import { parseStoredPayload } from './questionnaire-validation';
+import type { ReportBrandRow, BrandStatus } from './types';
 
 export async function getBrandsWithStatus(): Promise<ReportBrandRow[]> {
   const responses = await prisma.brandResponse.findMany({
@@ -41,7 +42,7 @@ export async function getBrandsWithStatus(): Promise<ReportBrandRow[]> {
       completedBy: r.completedBy,
       updatedAt: r.updatedAt,
       submittedAt: r.submittedAt,
-      payload: r.payload as QuestionnairePayload,
+      payload: parseStoredPayload(r.payload),
     };
   });
 }
@@ -79,6 +80,6 @@ export async function getBrandWithStatus(slug: string): Promise<ReportBrandRow |
     completedBy: r.completedBy,
     updatedAt: r.updatedAt,
     submittedAt: r.submittedAt,
-    payload: r.payload as QuestionnairePayload,
+    payload: parseStoredPayload(r.payload),
   };
 }

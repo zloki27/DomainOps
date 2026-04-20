@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { BrandDef } from '@/lib/brands';
-import type { QuestionnairePayload } from '@/lib/types';
+import type { PersonRow, QuestionnairePayload, SupplierRow } from '@/lib/types';
 import {
   emptyGovernanceAnswer,
   emptyOwnershipAnswer,
@@ -13,10 +13,10 @@ import {
   emptySupplierRow,
 } from '@/lib/payload';
 import { GOVERNANCE_QUESTIONS, OWNERSHIP_QUESTIONS } from '@/lib/questions';
-import RepeatableSection from '@/app/components/RepeatableSection';
+import RepeatableSection, { type ColumnDef } from '@/app/components/RepeatableSection';
 import FixedQuestionSection from '@/app/components/FixedQuestionSection';
 
-const PERSON_COLS = [
+const PERSON_COLS: ColumnDef<PersonRow>[] = [
   { key: 'name', label: 'Name', placeholder: 'Anna Meier' },
   { key: 'title', label: 'Title', placeholder: 'Hostmaster' },
   { key: 'department', label: 'Department / Team', placeholder: 'Domain Operations' },
@@ -30,7 +30,7 @@ const PERSON_COLS = [
   { key: 'estimatedPercent', label: 'Estimated % on domain work', placeholder: '100' },
 ];
 
-const SUPPLIER_COLS = [
+const SUPPLIER_COLS: ColumnDef<SupplierRow>[] = [
   { key: 'registryName', label: 'Registry / Wholesale registrar', placeholder: 'DENIC (.de)' },
   { key: 'type', label: 'Type (direct accreditation / wholesale)', placeholder: 'Direct accreditation' },
   { key: 'primaryContact', label: 'Primary contact (name, title)', placeholder: 'Anna Meier, Hostmaster' },
@@ -179,6 +179,11 @@ export default function BrandForm({ brand }: { brand: BrandDef }) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ completedBy: cb, questionnaireDate: date, payload: pl }),
         });
+        if (res.status === 409) {
+          setPageStatus('submitted');
+          setSaveState('idle');
+          return;
+        }
         if (!res.ok) throw new Error();
         setSaveState('saved');
         setTimeout(() => setSaveState(s => (s === 'saved' ? 'idle' : s)), 2500);
@@ -224,6 +229,11 @@ export default function BrandForm({ brand }: { brand: BrandDef }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ completedBy, questionnaireDate, payload }),
       });
+      if (res.status === 409) {
+        setPageStatus('submitted');
+        setSaveState('idle');
+        return;
+      }
       if (!res.ok) throw new Error();
       setPageStatus('submitted');
       setSaveState('idle');
