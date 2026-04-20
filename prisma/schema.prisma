@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ResponseStatus {
+  IN_PROGRESS
+  SUBMITTED
+}
+
+model Brand {
+  id          String         @id @default(cuid())
+  slug        String         @unique
+  displayName String
+  logoPath    String?
+  sortOrder   Int
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  response    BrandResponse?
+}
+
+model BrandResponse {
+  id                String         @id @default(cuid())
+  brandId           String         @unique
+  status            ResponseStatus
+  completedBy       String
+  questionnaireDate DateTime
+  payload           Json
+  submittedAt       DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  brand             Brand          @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
