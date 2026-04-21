@@ -53,6 +53,11 @@ For app build:
 5. `05-vps-deployment-runbook.md`
 6. `07-claude-prompt-02-app-build.md`
 
+For report export extension:
+1. `03-ui-build-brief-for-claude.md`
+2. `08-report-export-extension.md`
+3. `09-claude-prompt-03-report-export.md`
+
 ## Mandatory Build Rules For Claude
 - Do not use git.
 - Do not commit or push anything.

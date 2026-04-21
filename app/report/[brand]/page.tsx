@@ -7,6 +7,8 @@ import { getBrandWithStatus } from '@/lib/report';
 import { OWNERSHIP_QUESTIONS, GOVERNANCE_QUESTIONS } from '@/lib/questions';
 import type { PersonRow, OwnershipAnswer, SupplierRow, GovernanceAnswer, ReportBrandRow } from '@/lib/types';
 import PurgeButton from '../PurgeButton';
+import ReportExportActions from '../ReportExportActions';
+import { toMarkdown, toHtml, toPlainText } from '@/lib/report-export';
 
 function fmt(date: Date | null) {
   if (!date) return '—';
@@ -144,6 +146,10 @@ export default async function ReportBrandPage({
   const row = await getBrandWithStatus(slug);
   if (!row) notFound();
 
+  const exportMd = toMarkdown(row);
+  const exportHtml = toHtml(row);
+  const exportTxt = toPlainText(row);
+
   const p = row.payload;
 
   return (
@@ -185,6 +191,11 @@ export default async function ReportBrandPage({
             {row.updatedAt && <p><span className="text-stone-400">Last updated</span> {fmt(row.updatedAt)}</p>}
             {row.submittedAt && <p><span className="text-stone-400">Submitted</span> {fmt(row.submittedAt)}</p>}
           </div>
+        </div>
+
+        {/* Export actions */}
+        <div className="flex items-center justify-end mb-6">
+          <ReportExportActions markdown={exportMd} html={exportHtml} plainText={exportTxt} compact />
         </div>
 
         {/* No data state */}

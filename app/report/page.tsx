@@ -6,6 +6,8 @@ import { getBrandsWithStatus } from '@/lib/report';
 import { OWNERSHIP_QUESTIONS, GOVERNANCE_QUESTIONS } from '@/lib/questions';
 import type { ReportBrandRow, PersonRow, OwnershipAnswer, SupplierRow, GovernanceAnswer } from '@/lib/types';
 import PurgeButton from './PurgeButton';
+import ReportExportActions from './ReportExportActions';
+import { toMarkdownAll, toHtmlAll, toPlainTextAll } from '@/lib/report-export';
 
 function statusBadge(status: ReportBrandRow['status']) {
   const base = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
@@ -154,6 +156,10 @@ function BrandSummaryBlock({ row }: { row: ReportBrandRow }) {
 export default async function ReportPage() {
   const brands = await getBrandsWithStatus();
 
+  const exportMd = toMarkdownAll(brands);
+  const exportHtml = toHtmlAll(brands);
+  const exportTxt = toPlainTextAll(brands);
+
   const submitted = brands.filter(b => b.status === 'Submitted').length;
   const inProgress = brands.filter(b => b.status === 'In progress').length;
   const notStarted = brands.filter(b => b.status === 'Not started').length;
@@ -165,8 +171,13 @@ export default async function ReportPage() {
         {/* Header */}
         <div className="mb-10">
           <p className="text-xs font-semibold tracking-widest text-stone-400 uppercase mb-2">Internal — Not for distribution</p>
-          <h1 className="text-3xl font-bold text-[var(--color-primary)] mb-1">Report Overview</h1>
-          <p className="text-stone-500">Domain Operations Discovery · All brands</p>
+          <div className="flex items-end justify-between gap-4 flex-wrap">
+            <div>
+              <h1 className="text-3xl font-bold text-[var(--color-primary)] mb-1">Report Overview</h1>
+              <p className="text-stone-500">Domain Operations Discovery · All brands</p>
+            </div>
+            <ReportExportActions markdown={exportMd} html={exportHtml} plainText={exportTxt} compact />
+          </div>
         </div>
 
         {/* Stats */}
