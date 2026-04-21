@@ -69,7 +69,7 @@ export default function RepeatableSection<T extends object>({
                       onChange={e => update(i, col.key, e.target.value)}
                       disabled={disabled}
                       rows={3}
-                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg bg-white resize-none focus:outline-none focus:border-[#1C1917] focus:ring-2 focus:ring-[#1C1917]/10 disabled:bg-stone-100 disabled:text-stone-400 transition-colors"
+                      className="w-full px-3 py-2 text-sm border border-stone-200 rounded-lg bg-white resize-y focus:outline-none focus:border-[#1C1917] focus:ring-2 focus:ring-[#1C1917]/10 disabled:bg-stone-100 disabled:text-stone-400 transition-colors"
                     />
                   ) : (
                     <input
