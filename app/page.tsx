@@ -6,7 +6,7 @@ const BRANDS = [
   { slug: "checkdomain",  displayName: "checkdomain",  logo: "/brand/checkdomain.svg",  ext: "svg" },
   { slug: "dogado",       displayName: "Dogado",        logo: "/brand/dogado.svg",        ext: "svg" },
   { slug: "metanet",      displayName: "Metanet",       logo: "/brand/metanet.svg",       ext: "svg" },
-  { slug: "herold",       displayName: "Herold",        logo: "/brand/herold.jpeg",      ext: "jpeg" },
+  { slug: "herold",       displayName: "Herold",        logo: "/brand/herold.svg",       ext: "svg"  },
   { slug: "hostnet",      displayName: "Hostnet",       logo: "/brand/hostnet.svg",       ext: "svg" },
   { slug: "zoner",        displayName: "Zoner",         logo: "/brand/zoner.svg",         ext: "svg" },
   { slug: "uniweb",       displayName: "Uniweb",        logo: "/brand/uniweb.svg",        ext: "svg" },

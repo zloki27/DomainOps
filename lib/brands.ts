@@ -10,7 +10,7 @@ export const BRANDS: BrandDef[] = [
   { slug: 'checkdomain',  displayName: 'checkdomain',  logoPath: '/brand/checkdomain.svg',  sortOrder: 2  },
   { slug: 'dogado',       displayName: 'Dogado',       logoPath: '/brand/dogado.svg',       sortOrder: 3  },
   { slug: 'metanet',      displayName: 'Metanet',      logoPath: '/brand/metanet.svg',      sortOrder: 4  },
-  { slug: 'herold',       displayName: 'Herold',       logoPath: '/brand/herold.jpeg',      sortOrder: 5  },
+  { slug: 'herold',       displayName: 'Herold',       logoPath: '/brand/herold.svg',       sortOrder: 5  },
   { slug: 'hostnet',      displayName: 'Hostnet',      logoPath: '/brand/hostnet.svg',      sortOrder: 6  },
   { slug: 'zoner',        displayName: 'Zoner',        logoPath: '/brand/zoner.svg',        sortOrder: 7  },
   { slug: 'uniweb',       displayName: 'Uniweb',       logoPath: '/brand/uniweb.svg',       sortOrder: 8  },
